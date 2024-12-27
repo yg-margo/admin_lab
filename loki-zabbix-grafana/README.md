@@ -18,7 +18,7 @@
 2. Командами `docker exec -u www-data -it nextcloud bash` и `php occ config:system:set trusted_domains 1 --value="nextcloud"` разрешаем zabbix подключаться к nexcloud
 3. В _Data collection → Hosts_ создали хост для Nextcloud и подключили шаблон мониторинга.
 4. Проверили в _Monitoring → Latest data_ — данные успешно поступают (значение `healthy`).
-	![](img/img4.png)
+	![](images/img4.png)
 5. Проверили работу триггеров, включив в nextcloud maintenance mode командой `php occ maintenance:mode --on`. После чего зафиксировали проблему в разделе Monitoring → Problems, связанную с режимом обслуживания Nextcloud. Отключаем maintenance mode командой `php occ maintenance:mode --off` и проблема становится решенной
 
 ## Часть 3. Визуализация
@@ -27,12 +27,12 @@
 2. После перезапуска вошли в Grafana и в разделе `Administration → Plugins` активировали плагин Zabbix.
 3. Подключили Loki и Zabbix к Grafana. 
 4. В Explore, выбрали в качестве селектора индекс job, как результат мы увидели логи, подтверждая корректную настройку.
-	![](img/img5.png)
+	![](images/img5.png)
 1. То же самое было проделано с Zabbix.
-	![](img/img6.png)
+	![](images/img6.png)
 
 ## Создание дашбордов
-![](img/img7.png)
+![](images/img7.png)
 
 
 ## Ответы на вопросы
