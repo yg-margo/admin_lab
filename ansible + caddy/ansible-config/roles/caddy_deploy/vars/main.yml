@@ -1,8 +1,0 @@
----
-# vars file for caddy_deploy
-
-domain_name: zzzvvv.duckdns.org
-
-log:  # Можно поиграться со значениями
-  file: /var/log/caddy_access.log
-  level: "INFO"
