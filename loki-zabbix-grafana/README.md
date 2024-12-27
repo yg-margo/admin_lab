@@ -12,65 +12,28 @@
 
 ![Проверка логов](images/img3.png)
 
-![Логи promtail](images/img4.png)
-
 ## Часть 2. Мониторинг
 
-Настраиваем Zabbix и имортируем кастомный шаблон
-
-![Вход в учетную запись Zabbix](images/img5.png)
-
-![Импорт шаблона](images/img7.png)
-
-В разделе Data collection → Hosts создаем хост. Указываем адрес контейнера nextcloud, хост группа - Applications. В поле Templates выбираем добавленный на шаге 2 Templates/Applications→ Test ping template
-
-
-![Создание хоста](images/img9.png)
-
-Переходим в раздел Monitoring → Latest data, где можно увидеть первые данные. В нашем случае значение healthy
-
-![Мониторинг](images/img10.png)
-
-Временно включаем в Nextcloud maintenance mode, проверяем что сработал триггер, выключаем режим обратно и убеждаемся, что
-проблема помечена как “решенная”
-
-![Появление проблемы](images/img11.png)
-
-![Проблема решена](images/img12.png)
+1. Подключились к Zabbix и импортировали кастомный шаблон для мониторинга nextcloud.
+2. Командами `docker exec -u www-data -it nextcloud bash` и `php occ config:system:set trusted_domains 1 --value="nextcloud"` разрешаем zabbix подключаться к nexcloud
+3. В _Data collection → Hosts_ создали хост для Nextcloud и подключили шаблон мониторинга.
+4. Проверили в _Monitoring → Latest data_ — данные успешно поступают (значение `healthy`).
+	![](img/img4.png)
+5. Проверили работу триггеров, включив в nextcloud maintenance mode командой `php occ maintenance:mode --on`. После чего зафиксировали проблему в разделе Monitoring → Problems, связанную с режимом обслуживания Nextcloud. Отключаем maintenance mode командой `php occ maintenance:mode --off` и проблема становится решенной
 
 ## Часть 3. Визуализация
 
-![Grafana](images/img14.png)
+1. Установили плагин Zabbix для Grafana командой `docker exec -it grafana bash -c "grafana cli plugins install alexanderzobnin-zabbix-app"`, после чего перезапустили контейнер Grafana с помощью команды `docker restart grafana`.
+2. После перезапуска вошли в Grafana и в разделе `Administration → Plugins` активировали плагин Zabbix.
+3. Подключили Loki и Zabbix к Grafana. 
+4. В Explore, выбрали в качестве селектора индекс job, как результат мы увидели логи, подтверждая корректную настройку.
+	![](img/img5.png)
+1. То же самое было проделано с Zabbix.
+	![](img/img6.png)
 
-Подключаем Loki к Grafana, раздел Connections → Data sources → Loki. В настройках подключения указываем имя и адрес http://loki:3100. Сохраняем подключение
+## Создание дашбордов
+![](img/img7.png)
 
-
-![Подключение Loki](images/img15.png)
-Так же подключаем Zabbix: снова добавляем новый датасурс, в качестве URL указываем http://zabbix-frontend:8082/api_jsonrpc.php, заполняем Username и Password, через Save & test проверяем, что подключение успешно
-
-![Подключение Zabbix](images/img16.png)
-
-Переходим в Explore, выбираем в качестве селектора job либо filename. Затем нажимпем Run query и видим логи
-
-![Логи](images/img17.png)
-
-![Фильтры в Zabbix](images/img18.png)
-
-## Задание 1. Запросы
-
-![Простое отображение логов](images/img19.png)
-
-![Логи, содержащие ошибки](images/img20.png)
-
-![Подсчет логов за 24 часа, содержащих warning (таких нет)](images/img21.png)
-
-![Мониторинг состояния](images/img22.png)
-
-## Задание 2. Дашборды
-
-![Дашборд 1](images/img23.png)
-
-![Дашборд 2](images/img24.png)
 
 ## Ответы на вопросы
 
