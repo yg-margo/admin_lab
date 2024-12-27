@@ -172,11 +172,7 @@ ansible-playbook caddy_deploy.yml --ask-become-pass
 
 ---
 
-## Часть 3: Настройка домена и конфигурации Caddy
-
-### Регистрация домена
-Зарегистрируем бесплатный домен на [DuckDNS](https://www.duckdns.org). Для примера был использован домен `zzzvvv.duckdns.org`:
-![duckdns](img/duckdns.png)
+## Часть 3: Настройка конфигурации Caddy
 
 ### Настройка Caddy
 Создаём шаблон для файла конфигурации Caddy с использованием Jinja2 (`roles/caddy_deploy/templates/Caddyfile.j2`):
