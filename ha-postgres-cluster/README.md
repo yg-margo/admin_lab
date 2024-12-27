@@ -9,6 +9,7 @@
 Создадим рабочую директорию `postgres-cluster`.
 
 **Структура файлов:**
+
 ![file-structure](img/file-structure.png)
 
 ---
